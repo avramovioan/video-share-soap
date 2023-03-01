@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ax23="http://user.services.fmi/xsd" xmlns:ns="http://user.services.fmi" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" targetNamespace="http://user.services.fmi">
+    <wsdl:documentation>
+		Please Type your service description here
+	</wsdl:documentation>
+    <wsdl:types>
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://user.services.fmi/xsd">
+            <xs:complexType name="User">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="firstName" nillable="true" type="xs:string"/>
+                    <xs:element minOccurs="0" name="id" type="xs:int"/>
+                    <xs:element minOccurs="0" name="lastName" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema xmlns:ax24="http://user.services.fmi/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://user.services.fmi">
+            <xs:import namespace="http://user.services.fmi/xsd"/>
+            <xs:element name="UserServiceException">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="UserServiceException" nillable="true" type="ns:Exception"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:complexType name="Exception">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>
+            <xs:element name="create">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="id" type="xs:int"/>
+                        <xs:element minOccurs="0" name="firstName" nillable="true" type="xs:string"/>
+                        <xs:element minOccurs="0" name="lastName" nillable="true" type="xs:string"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="createResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax24:User"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getAll">
+                <xs:complexType>
+                    <xs:sequence/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getAllResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax24:User"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getById">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="id" type="xs:int"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="getByIdResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="return" nillable="true" type="ax24:User"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:schema>
+    </wsdl:types>
+    <wsdl:message name="getAllRequest">
+        <wsdl:part name="parameters" element="ns:getAll"/>
+    </wsdl:message>
+    <wsdl:message name="getAllResponse">
+        <wsdl:part name="parameters" element="ns:getAllResponse"/>
+    </wsdl:message>
+    <wsdl:message name="getByIdRequest">
+        <wsdl:part name="parameters" element="ns:getById"/>
+    </wsdl:message>
+    <wsdl:message name="getByIdResponse">
+        <wsdl:part name="parameters" element="ns:getByIdResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UserServiceException">
+        <wsdl:part name="parameters" element="ns:UserServiceException"/>
+    </wsdl:message>
+    <wsdl:message name="createRequest">
+        <wsdl:part name="parameters" element="ns:create"/>
+    </wsdl:message>
+    <wsdl:message name="createResponse">
+        <wsdl:part name="parameters" element="ns:createResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="UserServicePortType">
+        <wsdl:operation name="getAll">
+            <wsdl:input message="ns:getAllRequest" wsaw:Action="urn:getAll"/>
+            <wsdl:output message="ns:getAllResponse" wsaw:Action="urn:getAllResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="getById">
+            <wsdl:input message="ns:getByIdRequest" wsaw:Action="urn:getById"/>
+            <wsdl:output message="ns:getByIdResponse" wsaw:Action="urn:getByIdResponse"/>
+            <wsdl:fault message="ns:UserServiceException" name="UserServiceException" wsaw:Action="urn:getByIdUserServiceException"/>
+        </wsdl:operation>
+        <wsdl:operation name="create">
+            <wsdl:input message="ns:createRequest" wsaw:Action="urn:create"/>
+            <wsdl:output message="ns:createResponse" wsaw:Action="urn:createResponse"/>
+            <wsdl:fault message="ns:UserServiceException" name="UserServiceException" wsaw:Action="urn:createUserServiceException"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="UserServiceSoap11Binding" type="ns:UserServicePortType">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="getAll">
+            <soap:operation soapAction="urn:getAll" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getById">
+            <soap:operation soapAction="urn:getById" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="UserServiceException">
+                <soap:fault use="literal" name="UserServiceException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="create">
+            <soap:operation soapAction="urn:create" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="UserServiceException">
+                <soap:fault use="literal" name="UserServiceException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="UserServiceSoap12Binding" type="ns:UserServicePortType">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <wsdl:operation name="getAll">
+            <soap12:operation soapAction="urn:getAll" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getById">
+            <soap12:operation soapAction="urn:getById" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="UserServiceException">
+                <soap12:fault use="literal" name="UserServiceException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+        <wsdl:operation name="create">
+            <soap12:operation soapAction="urn:create" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="UserServiceException">
+                <soap12:fault use="literal" name="UserServiceException"/>
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="UserServiceHttpBinding" type="ns:UserServicePortType">
+        <http:binding verb="POST"/>
+        <wsdl:operation name="getAll">
+            <http:operation location="getAll"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getById">
+            <http:operation location="getById"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="create">
+            <http:operation location="create"/>
+            <wsdl:input>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:input>
+            <wsdl:output>
+                <mime:content type="application/xml" part="parameters"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="UserService">
+        <wsdl:port name="UserServiceHttpSoap11Endpoint" binding="ns:UserServiceSoap11Binding">
+            <soap:address location="http://localhost:8080/video-service/services/UserService.UserServiceHttpSoap11Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="UserServiceHttpSoap12Endpoint" binding="ns:UserServiceSoap12Binding">
+            <soap12:address location="http://localhost:8080/video-service/services/UserService.UserServiceHttpSoap12Endpoint/"/>
+        </wsdl:port>
+        <wsdl:port name="UserServiceHttpEndpoint" binding="ns:UserServiceHttpBinding">
+            <http:address location="http://localhost:8080/video-service/services/UserService.UserServiceHttpEndpoint/"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
